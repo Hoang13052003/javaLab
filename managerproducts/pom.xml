@@ -83,6 +83,12 @@
             <version>1.7.36</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-driver-sync</artifactId>
+            <version>4.10.2</version> <!-- Hoặc phiên bản mới nhất -->
+        </dependency>
+
     </dependencies>
 
 </project>

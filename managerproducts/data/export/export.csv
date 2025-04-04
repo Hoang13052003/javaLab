@@ -1,0 +1,6 @@
+id,name,price,stock,sum_price,expired_date,status
+1,cake,54000.0,10,06/04/2025,near_expired
+2,candy,25000.0,2,29/04/2025,valid
+3,coca,72000.0,20,12/04/2025,near_expired
+4,candy,40000.0,5,28/04/2025,valid
+5,milk,50000.0,0,31/03/2025,expired

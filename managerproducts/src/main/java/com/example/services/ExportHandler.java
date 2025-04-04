@@ -17,6 +17,16 @@ import com.example.models.Products;
 import com.itextpdf.html2pdf.HtmlConverter;
 
 public class ExportHandler {
+    /**
+     * Processes an HTML template by injecting data using Thymeleaf.
+     *
+     * @param template the name of the template file (without extension) to be
+     *                 processed
+     * @param data     a map of key-value pairs to be injected into the template
+     * @return the processed template as a String with data injected
+     * @throws Exception if an error occurs during the template processing
+     */
+
     public static String processTemplate(String template, Map<String, Object> data) throws Exception {
         // Cau hinh Thymeleaf
         ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
@@ -39,10 +49,13 @@ public class ExportHandler {
             throws Exception {
         // create data
         Map<String, Object> data = new HashMap<>();
+
         LocalDateTime now = LocalDateTime.now();
         String formattedDate = now.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
-        data.put("date", formattedDate);
+
         List<Map<String, Object>> items = createData(products);
+
+        data.put("date", formattedDate);
         data.put("items", items);
 
         // Load template HTML và thay thế dữ liệu

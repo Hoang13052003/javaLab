@@ -1,16 +1,24 @@
 package com.example.services;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -19,7 +27,9 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.example.models.DataExemple;
 import com.example.models.Products;
+import com.example.models.Status;
 
 public class FileHandler {
     public static void writeToExcel(String path, List<Products> products) throws IOException {
@@ -43,7 +53,7 @@ public class FileHandler {
                 row.createCell(3).setCellValue(p.getStock());
                 row.createCell(4).setCellValue(p.getPrice() * p.getStock());
                 row.createCell(5).setCellValue(p.getExpired_date().toString());
-                row.createCell(6).setCellValue(p.getStatus());
+                row.createCell(6).setCellValue(p.getStatus().name());
             }
 
             // Write to file
@@ -53,6 +63,29 @@ public class FileHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void writeToCSV(String path, List<Products> products) throws IOException {
+        String header = "id,name,price,stock,sum_price,expired_date,status";
+        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(path))) {
+            writer.write(header);
+            writer.newLine();
+
+            products.stream()
+                    .map(Products::toStringCSV)
+                    .forEach(line -> {
+                        try {
+                            writer.write(line);
+                            writer.newLine();
+                        } catch (IOException e) {
+                            throw new RuntimeException("Error writing to file", e);
+                        }
+                    });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public static List<Products> readFromFile(String path) throws IOException {
@@ -102,16 +135,71 @@ public class FileHandler {
         return products;
     }
 
-    private static String statusExpired(LocalDate curDate) {
+    public static List<Products> readFromFileCSV(String path) throws IOException {
+        try (BufferedReader br = Files.newBufferedReader(Paths.get(path))) {
+
+            return br.lines()
+                    .skip(1)
+                    .map(line -> {
+                        try {
+                            return fromProductLine(line, ",");
+                        } catch (Exception e) {
+                            System.err.println("Skipping invalid line: " + line + " - Error: " + e.getMessage());
+                            return null;
+                        }
+                    })
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+
+        }
+    }
+
+    public static List<Products> readFromFileTxt(String path) throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            return br.lines()
+                    .map(line -> {
+                        try {
+                            return fromProductLine(line, ",");
+                        } catch (Exception e) {
+                            System.err.println("Skipping invalid line: " + line + " - Error: " + e.getMessage());
+                            return null;
+                        }
+                    })
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+        }
+    }
+
+    private static Products fromProductLine(String line, String delimiter) throws Exception {
+        String[] data = line.split(delimiter);
+
+        if (data.length != 5) {
+            throw new IllegalArgumentException("Invalid line format: " + line);
+        }
+
+        try {
+            int id = Integer.parseInt(data[0]);
+            String name = data[1];
+            double price = Double.parseDouble(data[2]);
+            int stock = Integer.parseInt(data[3]);
+            LocalDate expired_date = LocalDate.parse(data[4].trim(), DataExemple.DATE_FORMATTER);
+            Status status = statusExpired(expired_date);
+            return new Products(id, name, price, stock, expired_date, status);
+        } catch (NumberFormatException | DateTimeParseException e) {
+            throw new Exception("Error parsing line: " + line + " - " + e.getMessage().toString(), e);
+        }
+    }
+
+    private static Status statusExpired(LocalDate curDate) {
         LocalDate dateConverted = LocalDate.now();
         long daysBetween = ChronoUnit.DAYS.between(dateConverted, curDate);
 
         if (daysBetween > 0 && daysBetween < 16) {
-            return "near_expired";
+            return Status.near_expired;
         } else if (daysBetween >= 16) {
-            return "valid";
+            return Status.valid;
         } else {
-            return "expired";
+            return Status.expired;
         }
     }
 }

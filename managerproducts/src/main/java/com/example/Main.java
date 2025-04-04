@@ -28,7 +28,8 @@ public class Main {
             System.out.println("2. Xu ly data");
             System.out.println("3. Xuat file ..");
             System.out.println("4. Xuat file PDF");
-            System.out.println("5. Thoat!");
+            System.out.println("5. Insert All data vao database");
+            System.out.println("6. Thoat!");
             System.out.print("Chon: ");
             choice = Integer.parseInt(System.console().readLine());
 
@@ -81,7 +82,7 @@ public class Main {
                 case 3: {
                     Callable<Boolean> task = () -> {
                         System.out.println("Dang xuat file...");
-                        String path = "D:\\DATA\\2025\\Lab\\lab1\\managerproducts\\data\\export\\export.xlsx";
+                        String path = "D:\\DATA\\2025\\Lab\\lab1\\managerproducts\\data\\export\\export.csv";
                         boolean result = manager.writeToFile(path);
                         if (result) {
                             System.out.println("Ghi file thanh cong!");
@@ -109,7 +110,14 @@ public class Main {
                     }
                 }
                     break;
+
                 case 5: {
+                    manager.insertAll();
+                    System.out.print("Insert data vao database thanh cong!");
+                }
+                    break;
+
+                case 6: {
                     System.out.println("Cam on ban da su dung chuong trinh!");
                     input.close();
                     executor.shutdown();
