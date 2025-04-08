@@ -8,13 +8,13 @@ import java.util.List;
 import org.bson.Document;
 
 import com.example.database.DatabaseConnection;
-import com.example.interfaces.DatabaseHandler;
-import com.example.models.DataExemple;
-import com.example.models.Products;
+import com.example.ManageProducts.interfaces.DatabaseHandler;
+import com.example.ManageProducts.models.DataExemple;
+import com.example.ManageProducts.models.Products;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
-import com.example.models.Status;
+import com.example.ManageProducts.models.Status;
 
 public class ProductsHandler implements DatabaseHandler {
 

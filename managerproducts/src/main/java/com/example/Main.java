@@ -1,16 +1,85 @@
 package com.example;
 
+// import com.example.ManageProducts.models.Bank.BankAccount;
+
 import java.io.File;
+// import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javax.swing.JFileChooser;
 
-import com.example.services.ExportHandler;
-import com.example.services.ManagerProducts;
+// import com.example.DemoFacrory.DemoAbsTractFactoryMethod.AnimalFactory.FourLegsAnimalFactory;
+// import com.example.DemoFacrory.DemoAbsTractFactoryMethod.AnimalFactory.TwoLegsAnimalFactory;
+// import com.example.DemoFacrory.DemoFactoryMethod.AnimalFactory.BasicCreateAnimal;
+// import com.example.DemoFacrory.DemoFactoryMethod.AnimalFactory.RadomCreateAnimal;
+// import com.example.DemoFacrory.interfacesFactory.AnimalFactory;
+import com.example.ManageProducts.services.ExportHandler;
+import com.example.ManageProducts.services.ManagerProducts;
+// import com.example.Observer.models.VideoData;
+// import com.example.Observer.notifiers.EmailNotifiers;
+// import com.example.Observer.notifiers.FacebookNotifiers;
+// import com.example.Observer.notifiers.PhoneNotifiers;
+// import com.example.Observer.notifiers.YoutubeNotifiers;
 
 public class Main {
+    // // Demo Observer
+    // public static void main(String[] args) throws Exception {
+    // var videoData = new VideoData();
+
+    // new EmailNotifiers(videoData);
+    // new PhoneNotifiers(videoData);
+    // var youtubeNotifiers = new YoutubeNotifiers(videoData);
+
+    // videoData.setTitle("Observer Pattern");
+
+    // videoData.detachObservers(youtubeNotifiers);
+    // System.out.println("----------------------------------------------");
+
+    // videoData.setDescription("Demo Observer Design Pattern");
+
+    // new FacebookNotifiers(videoData);
+    // System.out.println("----------------------------------------------");
+    // videoData.setFileName("video.mp4");
+
+    // }
+
+    //// Demo Bank
+    // public static void main(String[] args) throws Exception {
+    // BankAccount bankAccount = new BankAccount("Hoang", 1234);
+    // bankAccount.withdraw(900000.00);
+    // bankAccount.deposit(1000000.00);
+
+    // }
+
+    // //DemoFactory
+    // public static void main(String[] args) throws Exception {
+
+    // // DemoFactoryMethod
+    // // BasicCreateAnimal factoryBasic = new BasicCreateAnimal();
+    // // RadomCreateAnimal factoryRadom = new RadomCreateAnimal();
+
+    // // System.out.println(factoryBasic.createAnimal().getName());
+    // // System.out.println(factoryBasic.createAnimal().getName());
+    // // System.out.println(factoryBasic.createAnimal().getName());
+
+    // // System.out.println(factoryRadom.createAnimal().getName());
+    // // System.out.println(factoryRadom.createAnimal().getName());
+    // // System.out.println(factoryRadom.createAnimal().getName());
+    // // System.out.println(factoryRadom.createAnimal().getName());
+
+    // // DemoAbsTractFactoryMethod
+    // // AnimalFactory factory;
+
+    // // factory = new TwoLegsAnimalFactory();
+    // // System.out.println(factory.createAnimal().getName());
+
+    // // factory = new FourLegsAnimalFactory();
+    // // System.out.println(factory.createAnimal().getName());
+    // // System.out.println(factory.createAnimal().getName());
+
+    // }
 
     public static void main(String[] args) {
         ManagerProducts manager = new ManagerProducts();
@@ -133,4 +202,5 @@ public class Main {
         } while (true);
 
     }
+
 }

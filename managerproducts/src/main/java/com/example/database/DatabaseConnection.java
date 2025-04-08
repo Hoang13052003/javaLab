@@ -5,7 +5,7 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 
 public class DatabaseConnection {
-    private static DatabaseConnection instance;
+    private static volatile DatabaseConnection instance;
     private MongoClient mongoClient;
     private MongoDatabase database;
 
